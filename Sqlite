@@ -1,0 +1,56 @@
+import sqlite3
+baglanti=sqlite3.connect('Makineler.db')
+isaretci=baglanti.cursor()
+
+#isaretci.execute('''CREATE TABLE makine (makine_id INTEGER PRIMARY KEY,
+#gunluk_urun_miktari INTEGER,gunluk_calisma_saati INTEGER,
+#gunluk_duraksama_saati INTEGER)''')
+
+#yeniKayit=isaretci.execute('''INSERT INTO makine (makine_id, gunluk_urun_miktari,
+#gunluk_calisma_saati, gunluk_duraksama_saati ) VALUES (1020, 500, 8, 1)''')
+
+#yeniKayit=isaretci.execute('''INSERT INTO makine (makine_id, gunluk_urun_miktari,
+#gunluk_calisma_saati, gunluk_duraksama_saati ) VALUES (1021, 600, 7, 1)''')
+
+#yeniKayit=isaretci.execute('''INSERT INTO makine (makine_id, gunluk_urun_miktari,
+#gunluk_calisma_saati, gunluk_duraksama_saati ) VALUES (1022, 550, 6, 3)''')
+
+#yeniKayit=isaretci.execute('''INSERT INTO makine (makine_id, gunluk_urun_miktari,
+#gunluk_calisma_saati, gunluk_duraksama_saati ) VALUES (1023, 450, 7, 2)''')
+
+#yeniKayit=isaretci.execute('''INSERT INTO makine (makine_id, gunluk_urun_miktari,
+#gunluk_calisma_saati, gunluk_duraksama_saati ) VALUES (1024, 850, 8, 0)''')
+
+#yeniKayit=isaretci.execute('''INSERT INTO makine (makine_id, gunluk_urun_miktari,
+#gunluk_calisma_saati, gunluk_duraksama_saati ) VALUES (1025, 900, 8, 0)''')
+
+#yeniKayit=isaretci.execute('''INSERT INTO makine (makine_id, gunluk_urun_miktari,
+#gunluk_calisma_saati, gunluk_duraksama_saati ) VALUES (1026, 300, 6, 2)''')
+
+#yeniKayit=isaretci.execute('''INSERT INTO makine (makine_id, gunluk_urun_miktari,
+#gunluk_calisma_saati, gunluk_duraksama_saati ) VALUES (1027, 1000, 9, 1)''')
+
+#yeniKayit=isaretci.execute('''INSERT INTO makine (makine_id, gunluk_urun_miktari,
+#gunluk_calisma_saati, gunluk_duraksama_saati ) VALUES (1028, 1050, 10, 0)''')
+
+#yeniKayit=isaretci.execute('''INSERT INTO makine (makine_id, gunluk_urun_miktari,
+#gunluk_calisma_saati, gunluk_duraksama_saati ) VALUES (1029, 720, 6, 3)''')
+
+#yeniKayit=isaretci.execute('''INSERT INTO makine (makine_id, gunluk_urun_miktari,
+#gunluk_calisma_saati, gunluk_duraksama_saati ) VALUES (1030, 555, 8, 1)''')
+
+#yeniKayit=isaretci.execute('''INSERT INTO makine (makine_id, gunluk_urun_miktari,
+#gunluk_calisma_saati, gunluk_duraksama_saati ) VALUES (1031, 629, 7, 3)''')
+
+#yeniKayit=isaretci.execute('''INSERT INTO makine (makine_id, gunluk_urun_miktari,
+#gunluk_calisma_saati, gunluk_duraksama_saati ) VALUES (1032, 789, 5, 3)''')
+
+yeniKayit=isaretci.execute('''INSERT INTO makine (makine_id, gunluk_urun_miktari,
+gunluk_calisma_saati, gunluk_duraksama_saati ) VALUES (1033, 779, 5, 4)''')
+
+
+print(yeniKayit.lastrowid)
+
+
+baglanti.commit()
+baglanti.close()
