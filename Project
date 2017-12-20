@@ -1,0 +1,142 @@
+from PyQt4.QtGui import *
+from PyQt4.QtCore import *
+import sys
+from PyQt4 import QtGui, QtCore
+import sqlite3
+
+class girisPaneli(QtGui.QMainWindow):
+    def __init__(self, ebeveyn=None):
+        super(girisPaneli, self).__init__(ebeveyn)
+
+        self.widget = QtGui.QWidget(self)
+        self.setCentralWidget(self.widget)
+        layout = QGridLayout(self.widget)
+
+        
+        layout.addWidget(QLabel("Kullanici Adiniz :"), 0, 0)
+        self.nick = QLineEdit()
+        layout.addWidget(self.nick, 0, 1)
+
+        
+        layout.addWidget(QLabel("Parolaniz :"), 1, 0)
+        self.psw = QLineEdit()
+        self.psw.setEchoMode(QLineEdit.Password)
+        layout.addWidget(self.psw, 1, 1)
+
+        
+        self.giris = QPushButton("Giris")
+        layout.addWidget(self.giris, 2, 0, 2, 2)
+
+        self.widget.setLayout(layout)
+        self.setWindowTitle('Giris Paneli')
+
+        self.resize(300, 200)
+        self.widget.setLayout(layout)
+        self.giris.clicked.connect(self.girisKontrol)
+
+    def girisKontrol(self):
+
+        if self.nick.text() == 'admin' and self.psw.text() == 'senem123':
+            dialog = MakineDurumRaporu(self)
+            self.close()
+            dialog.show()
+
+        elif self.nick.text() != 'admin':
+
+            QMessageBox.information(self.widget, 'Dikkat !',
+                                    'Lutfen adinizi dogru girdiginizden emin olun.')
+            box.show()
+        elif self.psw.text() != 'senem123':
+
+            QMessageBox.information(self.widget, 'Dikkat !', 'Lutfen parolanizi dogru girdiginizden emin olun.')
+
+
+class MakineDurumRaporu(QtGui.QMainWindow):
+    def __init__(self, ebeveyn=None):
+        super(MakineDurumRaporu, self).__init__(ebeveyn)
+#Bu kısım uygulamanın tasarım kısmıdır.
+
+        self.widget = QtGui.QWidget(self)
+        self.setCentralWidget(self.widget)
+        
+        grid=QGridLayout()
+        grid.addWidget(QLabel('Makine ID Giriniz:'),0,0)
+        self.makine_id=QLineEdit()
+        grid.addWidget(self.makine_id,0,1)
+
+        grid.addWidget(QLabel('Günlük Çalışma Saati:'),1,0)
+        self.calismasaati=QLabel('')
+        grid.addWidget(self.calismasaati,1,1)
+
+        grid.addWidget(QLabel('Günlük Üretim Miktarı:'),2,0)
+        self.uretimmiktari=QLabel('')
+        grid.addWidget(self.uretimmiktari,2,1)
+
+        grid.addWidget(QLabel('Günlük Duraksama Saati:'),3,0)
+        self.duraksama=QLabel('')
+        grid.addWidget(self.duraksama,3,1)
+        
+        goster=QPushButton('Göster')
+        grid.addWidget(goster,4,0,1,2)
+        self.setLayout(grid)
+        self.setWindowTitle('Makine Durum Raporu Penceresi')
+        self.resize(300,300)
+        
+        self.connect(goster,SIGNAL('pressed()'), self.goster)
+        self.widget.setLayout(grid)
+        
+    def goster(self):
+        baglanti= sqlite3.connect('Makineler.db')
+        baglanti.row_factory = sqlite3.Row
+        if(baglanti):
+            print('Baglanti Başarılı!')
+        else:
+            print('Bağlantı Başarısız!')
+       
+        isaretci=baglanti.cursor()
+        isaretci2=baglanti.cursor()
+        isaretci3=baglanti.cursor()
+        #isaretci.execute("SELECT gunluk_calisma_saati FROM makine WHERE makine_id=?",(self.makine_id.text(),))
+        # isaretci2.execute("SELECT gunluk_urun_miktari FROM makine WHERE makine_id=?",(self.makine_id.text(),))
+        # isaretci3.execute("SELECT gunluk_duraksama_saati FROM makine WHERE makine_id=?",(self.makine_id.text(),))
+
+        #data=isaretci.fetchall()
+        # self.calismasaati.setText(str(isaretci.fetchall()))
+        #self.uretimmiktari.setText(str(isaretci2.fetchall()))
+        #self.duraksama.setText(str(isaretci3.fetchall()))
+        isaretci.execute("SELECT gunluk_calisma_saati,gunluk_urun_miktari,gunluk_duraksama_saati FROM makine WHERE makine_id=?",(self.makine_id.text(),))
+        
+        for verileri_cek in isaretci.fetchall():
+             self.calismasaati.setText(str(verileri_cek['gunluk_calisma_saati']))
+             self.uretimmiktari.setText(str(verileri_cek['gunluk_urun_miktari']))
+             self.duraksama.setText(str(verileri_cek['gunluk_duraksama_saati']))
+            
+        
+        #self.calismasaati.show()
+        #for i in data:
+            #self.uretimmiktari=[str(i)]
+            #self.duraksama=[('Makineler.db,gunluk_duraksama_saati')]
+        
+       
+       # sql="SELECT gunluk_ürün_miktarı,gunluk_calisma_saati,gunluk_duraksama_saati FROM makine WHERE id=self.id "
+       #self.calismasaati=sql[gunluk_calisma_saati]
+       # self.uretimmiktari=sql[gunluk_ürün_miktarı]
+       #self.duraksama=sql[gunluk_duraksama_saati]
+        oku = isaretci.execute('SELECT * FROM makine')
+        print(oku.fetchall())
+         
+        baglanti.commit()
+        baglanti.close()
+
+def main():
+    #uyg = QApplication([])
+    uyg = QtGui.QApplication(sys.argv)
+    pencere = girisPaneli()
+    
+    pencere.show()
+    # uyg.exec_()
+    sys.exit(uyg.exec_())
+
+
+if __name__== '__main__':
+    main()
